@@ -26,15 +26,18 @@ jobs:
     steps:
     - uses: actions/checkout@v6
 
+    - name: Install Task
+      uses: go-task/setup-task@v1
+
     - name: Dependencies
       run: sudo apt-get install texlive-xetex
 
     - name: Research Proposal
       run: |
           cd 'research proposal'
-          make
+          task
 
     - name: Thesis
       run: |
           cd thesis
-          make
+          task

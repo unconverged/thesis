@@ -1,0 +1,42 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+
+vars:
+  WORK_NAME: proposal
+  TARGET_FILE: "research proposal.pdf"
+
+
+tasks:
+  default:
+    desc: Build the project and then clean up
+    cmds:
+      - task: build
+      - task: clean
+
+  build:
+    desc: Build the project
+    deps: [clean]
+    cmds:
+      - xelatex --shell-escape --halt-on-error {{.WORK_NAME}}.tex
+      # - bibtex proposal  # name of a tex file to get bibliography from
+      - xelatex --shell-escape --halt-on-error {{.WORK_NAME}}.tex
+      - mv {{.WORK_NAME}}.pdf "{{.TARGET_FILE}}"
+    silent: true
+
+  clean:
+    desc: Clean up generated files
+    cmds:
+      - find . -name "*.aux" -delete  # remove aux files
+      - find . -name "*.log" -delete  # remove log files
+      - find . -name "*.gz" -delete   # remove archives
+      - find . -name "*.toc" -delete  # remove table of contents files
+      - find . -name "*.out" -delete  # output files
+      - find . -name "*.cpt" -delete  # some sort of strange files
+      - find . -name "*.spl" -delete  # some sort of strange files
+      - find . -name "*.bbl" -delete  # some sort of strange files
+      - find . -name "*.blg" -delete  # some sort of strange files
+      - find . -name "{{.WORK_NAME}}.idx" -delete  # remove by exact name, because removal of all .idx files will corrupt git
+      - find . -name "*.ilg" -delete  # remove indexing files
+      - find . -name "*.ind" -delete  # remove indexing files
+    silent: true
