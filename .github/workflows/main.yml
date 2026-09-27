@@ -30,7 +30,9 @@ jobs:
       uses: go-task/setup-task@v1
 
     - name: Dependencies
-      run: sudo apt-get install texlive-xetex
+      run: |
+          sudo apt-get update
+          sudo apt-get install texlive-xetex
 
     - name: Research Proposal
       run: |
